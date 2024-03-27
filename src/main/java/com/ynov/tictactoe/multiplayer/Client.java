@@ -7,10 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.ynov.tictactoe.Game.Game;
+
 public class Client {
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private Game game;
     
     public void startConnection(String ip, int port) throws UnknownHostException, IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -21,6 +24,8 @@ public class Client {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         String hostPseudo = sendMessage(pseudo);
         System.out.println(String.format("You joined %s's game!", hostPseudo));
+        game = new Game("O");
+        out.println("ready");
     }
 
     public void startChat() throws IOException {

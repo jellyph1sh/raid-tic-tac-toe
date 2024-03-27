@@ -7,11 +7,15 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.ynov.tictactoe.Game.Game;
+
 public class ClientHost {
     private ServerSocket serverSocket;
     private Socket clienSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private Game game;
+    private String clientPseudo;
 
     public void start(int port) throws IOException, InterruptedException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -39,8 +43,11 @@ public class ClientHost {
         clienSocket = serverSocket.accept();
         out = new PrintWriter(clienSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clienSocket.getInputStream()));
-        System.out.println(String.format("%s connected!", in.readLine()));
+        clientPseudo = in.readLine();
+        System.out.println(String.format("%s connected!", clientPseudo));
         out.println(pseudo);
+
+        game = new Game("X");
 
         /*String inputLine;
         while ((inputLine = in.readLine()) != null) {
@@ -56,6 +63,17 @@ public class ClientHost {
             }
             out.println("pos(2,2)");
         }*/
+    }
+
+    public void GameManager() throws IOException {
+        out.println("ready");
+        String resp = in.readLine();
+        if (resp != "ready") {
+            System.out.println("Error during initializing game.");
+            stop();
+            return;
+        }
+        System.out.println(String.format("%s is ready!", clientPseudo));
     }
 
     public void stop() throws IOException {

@@ -11,15 +11,9 @@ public class Game {
     private List<String> board = new ArrayList<String>();
     private String playerTurn;
 
-    public Game() {
+    public Game(String playerTurn) {
         this.InitBoard();
-        this.playerTurn = "X";
-        try {
-            this.Play();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.playerTurn = playerTurn;
     }
 
     private void InitBoard() {
