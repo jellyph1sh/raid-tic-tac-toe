@@ -13,9 +13,14 @@ public class Client {
     private BufferedReader in;
     
     public void startConnection(String ip, int port) throws UnknownHostException, IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Pseudo >> ");
+        String pseudo = reader.readLine();
         clientSocket = new Socket(ip, port);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String hostPseudo = sendMessage(pseudo);
+        System.out.println(String.format("You joined %s's game!", hostPseudo));
     }
 
     public void startChat() throws IOException {

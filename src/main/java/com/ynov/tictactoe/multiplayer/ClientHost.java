@@ -13,14 +13,36 @@ public class ClientHost {
     private PrintWriter out;
     private BufferedReader in;
 
-    public void start(int port) throws IOException {
+    public void start(int port) throws IOException, InterruptedException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Pseudo >> ");
+        String pseudo = reader.readLine();
         serverSocket = new ServerSocket(port);
-        System.out.println("Server initialized!");
+        System.out.println("You host the game!");
+        Thread waitingThread = new Thread() {
+            public void run() {
+                String logMsg = "Waiting for player";
+                while (clienSocket == null) {
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    logMsg += ".";
+                    System.out.println(logMsg);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        waitingThread.start();
         clienSocket = serverSocket.accept();
         out = new PrintWriter(clienSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clienSocket.getInputStream()));
+        System.out.println(String.format("%s connected!", in.readLine()));
+        out.println(pseudo);
 
-        String inputLine;
+        /*String inputLine;
         while ((inputLine = in.readLine()) != null) {
             if (".".equals(inputLine)) {
                 out.println("good bye");
@@ -33,8 +55,7 @@ public class ClientHost {
                 e.printStackTrace();
             }
             out.println("pos(2,2)");
-        }
-
+        }*/
     }
 
     public void stop() throws IOException {

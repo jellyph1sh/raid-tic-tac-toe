@@ -8,11 +8,11 @@ import com.ynov.tictactoe.multiplayer.Client;
 import com.ynov.tictactoe.multiplayer.ClientHost;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         PrintMainMenu();
     }
 
-    private static void PrintMainMenu() throws IOException {
+    private static void PrintMainMenu() throws IOException, InterruptedException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Choose an option:");
         System.out.println("1. Host game");
