@@ -27,7 +27,7 @@ public class ClientHost {
             public void run() {
                 String logMsg = "Waiting for player";
                 while (clienSocket == null) {
-                    System.out.print("\033[H\033[2J");
+                    System.out.print("\033[H\033[2J"); // Clear console
                     System.out.flush();
                     logMsg += ".";
                     System.out.println(logMsg);
@@ -48,32 +48,35 @@ public class ClientHost {
         out.println(pseudo);
 
         game = new Game("X");
-
-        /*String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            if (".".equals(inputLine)) {
-                out.println("good bye");
-                break;
-            }
-            System.out.println(inputLine);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            out.println("pos(2,2)");
-        }*/
+        game.ShowBoard();
+        GameManager();
+        stop();
     }
 
     public void GameManager() throws IOException {
-        out.println("ready");
-        String resp = in.readLine();
-        if (resp != "ready") {
-            System.out.println("Error during initializing game.");
-            stop();
-            return;
-        }
-        System.out.println(String.format("%s is ready!", clientPseudo));
+        do {
+            if (in.readLine().equals("win")) {
+                System.out.printf("%s win!\n", clientPseudo);
+                break;
+            }
+            System.out.println("Your turn!\n");
+            Integer position = game.Play();
+            out.println(position.toString());
+            game.ShowBoard();
+            in.readLine();
+            if (game.CheckWin()) {
+                System.out.println("You win!\n");
+                out.println("win");
+                break;
+            }
+            out.println("");
+            System.out.printf("Waiting %s to play...\n", clientPseudo);
+            String pos = in.readLine();
+            game.SetPosition(Integer.parseInt(pos), "O");
+            game.ShowBoard();
+            System.out.printf("%s play %s\n", clientPseudo, Integer.parseInt(pos) + 1);
+            out.println("");
+        } while (true);
     }
 
     public void stop() throws IOException {

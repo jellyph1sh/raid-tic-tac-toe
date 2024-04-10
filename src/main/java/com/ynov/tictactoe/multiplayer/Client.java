@@ -14,6 +14,7 @@ public class Client {
     private PrintWriter out;
     private BufferedReader in;
     private Game game;
+    private String hostPseudo;
     
     public void startConnection(String ip, int port) throws UnknownHostException, IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -22,10 +23,40 @@ public class Client {
         clientSocket = new Socket(ip, port);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String hostPseudo = sendMessage(pseudo);
+        hostPseudo = sendMessage(pseudo);
         System.out.println(String.format("You joined %s's game!", hostPseudo));
         game = new Game("O");
-        out.println("ready");
+        game.ShowBoard();
+        GameManager();
+    }
+
+    public void GameManager() throws IOException {
+        out.println("");
+        do {
+            System.out.printf("Waiting %s to play...\n", hostPseudo);
+            String pos = in.readLine();
+            game.SetPosition(Integer.parseInt(pos), "X");
+            game.ShowBoard();
+            System.out.printf("%s play %s\n", hostPseudo, Integer.parseInt(pos) + 1);
+            out.println("");
+            if (in.readLine().equals("win")) {
+                System.out.printf("%s win!\n", hostPseudo);
+                stopConnection();
+                break;
+            }
+            System.out.println("Your turn!\n");
+            Integer position = game.Play();
+            out.println(position.toString());
+            in.readLine();
+            game.ShowBoard();
+            if (game.CheckWin()) {
+                System.out.println("You win!\n");
+                out.println("win");
+                stopConnection();
+                break;
+            }
+            out.println("");
+        } while (true);
     }
 
     public void startChat() throws IOException {

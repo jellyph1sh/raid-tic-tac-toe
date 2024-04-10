@@ -36,38 +36,38 @@ public class Game {
         }
     }
 
-    public boolean Play() throws IOException {
-        if (CheckWin()) return true;
+    public Integer PlayerInput() throws IOException {
         System.out.println("Select position between 1 and 9");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Integer position = Integer.parseInt(br.readLine())-1;
         if (position < 0 || position > 8) {
             System.out.println("Not a valid position");
-            return Play();
+            return PlayerInput();
         }
-        if (" ".equals(board.get(position))) {    
-            board.set(position, playerTurn);
-            switch (playerTurn) {
-                case "X":
-                    playerTurn = "O";
-                    break;
-                case "O":
-                    playerTurn = "X";
-                    break;
-                default:
-                    break;
-            }
-            ShowBoard();
-            return Play();
-        }
-        System.out.println("Wrong position");
-        return Play();
+        return position;
     }
 
-    private boolean CheckWin() {
+    public boolean SetPosition(Integer position, String tag) {
+        if (" ".equals(board.get(position))) {    
+            board.set(position, tag);
+            return true;
+        }
+        return false;
+    } 
+
+    public Integer Play() throws IOException {
+        Integer position = PlayerInput();
+        if (!SetPosition(position, playerTurn)) {
+            System.out.println("Invalid position!");
+            return Play();
+        }
+        return position;
+    }
+
+    public boolean CheckWin() {
         // Horizontal
         for (int i=0; i<3; i++) {
-            if (CheckLine(i, 3) || CheckLine(i, 1)) return true;
+            if (CheckLine(i, 3) || CheckLine(i+(i*2), 1)) return true;
         }
         return CheckLine(0, 4) || CheckLine(2, 2);
     }
