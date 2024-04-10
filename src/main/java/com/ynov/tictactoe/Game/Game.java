@@ -8,24 +8,24 @@ import java.util.List;
 
 public class Game {
     
-    private List<String> board = new ArrayList<String>();
-    private String playerTurn;
+    private List<String> _board = new ArrayList<String>();
+    private String _tag;
 
-    public Game(String playerTurn) {
+    public Game(String tag) {
         this.InitBoard();
-        this.playerTurn = playerTurn;
+        this._tag = tag;
     }
 
     private void InitBoard() {
         for (int i=0; i<9; i++) {
-            board.add(" ");
+            this._board.add(" ");
         }
     }
 
     public void ShowBoard() {
         System.out.println("+---+---+---+");
         int index = 0;
-        for (String value : board) {
+        for (String value : this._board) {
             System.out.print("| ");
             System.out.print(value+" ");
             index++;
@@ -37,7 +37,7 @@ public class Game {
     }
 
     public Integer PlayerInput() throws IOException {
-        System.out.println("Select position between 1 and 9");
+        System.out.print("Select cell between 1 and 9 >> ");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
             Integer pos = Integer.parseInt(br.readLine());
@@ -55,8 +55,8 @@ public class Game {
     }
 
     public boolean SetPosition(Integer position, String tag) {
-        if (" ".equals(board.get(position))) {    
-            board.set(position, tag);
+        if (" ".equals(this._board.get(position))) {    
+            this._board.set(position, tag);
             return true;
         }
         return false;
@@ -64,7 +64,7 @@ public class Game {
 
     public Integer GetPlayerInput() throws IOException {
         Integer position = PlayerInput();
-        if (!SetPosition(position, playerTurn)) {
+        if (!SetPosition(position, this._tag)) {
             System.out.println("Invalid position!");
             return GetPlayerInput();
         }
@@ -80,6 +80,6 @@ public class Game {
     }
 
     private boolean CheckLine(int pos, int gap) {
-        return board.get(pos+gap).equals(board.get(pos)) && board.get(pos+gap).equals(board.get(pos+(gap*2))) && board.get(pos) != " ";
+        return this._board.get(pos+gap).equals(this._board.get(pos)) && this._board.get(pos+gap).equals(this._board.get(pos+(gap*2))) && this._board.get(pos) != " ";
     }
 }
