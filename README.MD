@@ -1,7 +1,7 @@
 # RAID TIC TAC TOE
 
-## DESCRIPTION
-2 days to coding a tic tac toe in Java.
+## DESCRIPTION
+Code multiplayer tic tac toe in Java.
 
 ## HOW TO INSTALL
 - Clone the repository with `git clone https://github.com/jellyph1sh/raid-tic-tac-toe.git`.
