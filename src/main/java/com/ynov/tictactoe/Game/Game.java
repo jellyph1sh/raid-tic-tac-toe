@@ -39,12 +39,19 @@ public class Game {
     public Integer PlayerInput() throws IOException {
         System.out.println("Select position between 1 and 9");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Integer position = Integer.parseInt(br.readLine())-1;
-        if (position < 0 || position > 8) {
-            System.out.println("Not a valid position");
+        try {
+            Integer pos = Integer.parseInt(br.readLine());
+            pos -= 1;
+            if (pos < 0 || pos > 8) {
+                System.out.println("Not a valid position");
+                return PlayerInput();
+            }
+
+            return pos;
+        } catch (Exception e) {
+            System.out.println("Your input is not a number.");
             return PlayerInput();
         }
-        return position;
     }
 
     public boolean SetPosition(Integer position, String tag) {
@@ -55,11 +62,11 @@ public class Game {
         return false;
     } 
 
-    public Integer Play() throws IOException {
+    public Integer GetPlayerInput() throws IOException {
         Integer position = PlayerInput();
         if (!SetPosition(position, playerTurn)) {
             System.out.println("Invalid position!");
-            return Play();
+            return GetPlayerInput();
         }
         return position;
     }

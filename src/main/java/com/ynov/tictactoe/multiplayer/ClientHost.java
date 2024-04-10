@@ -60,7 +60,7 @@ public class ClientHost {
                 break;
             }
             System.out.println("Your turn!\n");
-            Integer position = game.Play();
+            Integer position = game.GetPlayerInput();
             out.println(position.toString());
             game.ShowBoard();
             in.readLine();

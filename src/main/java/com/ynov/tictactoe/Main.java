@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.ynov.tictactoe.multiplayer.Client;
 import com.ynov.tictactoe.multiplayer.ClientHost;
+import com.ynov.tictactoe.multiplayer.GameClient;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -37,8 +37,7 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("IP Adress >> ");
         String ip = reader.readLine();
-        Client client = new Client();
-        client.startConnection(ip, 8080);
-        client.startChat();
+        GameClient client = new GameClient(ip, 8080);
+        client.GameManager();
     }
 }
