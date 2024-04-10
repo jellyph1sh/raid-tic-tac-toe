@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.ynov.tictactoe.multiplayer.ClientHost;
 import com.ynov.tictactoe.multiplayer.GameClient;
+import com.ynov.tictactoe.multiplayer.GameServerHost;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -21,8 +21,8 @@ public class Main {
         String option = reader.readLine();
         switch (option) {
             case "1":
-                ClientHost server = new ClientHost();
-                server.start(8080);
+                GameServerHost server = new GameServerHost(8080);
+                server.GameManager();
                 break;
             case "2":
                 PrintJoinMenu();

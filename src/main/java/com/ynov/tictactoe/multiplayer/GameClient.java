@@ -27,12 +27,6 @@ public class GameClient {
         System.out.println("Connected to your host!");
     }
 
-    private void CloseConnection() throws IOException {
-        this._send.close();
-        this._receive.close();
-        this._socket.close();
-    }
-
     public void GameManager() throws IOException {
         String pseudonyme = this.GetPlayerPseudonyme();
         this._hostPseudonyme = this.SendAndReceive(pseudonyme);
@@ -47,14 +41,12 @@ public class GameClient {
             this.UpdateHostPos();
             if (IsHostWon()) {
                 System.out.println(String.format("%s won!", this._hostPseudonyme));
-                this.CloseConnection();
                 return;
             }
             this.GetPlayerPosition();
             if (this._game.CheckWin()) {
                 System.out.println("You win!");
                 _send.println("win");
-                this.CloseConnection();
                 return;
             }
             this._send.println("");
